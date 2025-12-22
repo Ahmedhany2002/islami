@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islami/core/constants/colors/app_colors.dart';
 import 'package:islami/model/sura_model.dart';
+import 'package:islami/screens/home/sura_details/sura_details_screen.dart';
 import 'package:islami/screens/home/widgets/recently_item.dart';
 import 'package:islami/screens/home/widgets/sura_item.dart';
 
@@ -450,12 +451,26 @@ class QuranTab extends StatelessWidget {
                 },
                 itemCount: surasName.length,
                 itemBuilder: (context, index) {
-                  return SuraItem(
-                    suraModel: SuraModel(
-                      nameAr: surasName[index],
-                      nameEn: surasNameEnglish[index],
-                      verses: surasVersesCount[index],
-                      suraIndex: index + 1,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        SuraDetailsScreen.routeName,
+                        arguments: SuraModel(
+                          nameAr: surasName[index],
+                          nameEn: surasNameEnglish[index],
+                          verses: surasVersesCount[index],
+                          suraIndex: index + 1,
+                        ),
+                      );
+                    },
+                    child: SuraItem(
+                      suraModel: SuraModel(
+                        nameAr: surasName[index],
+                        nameEn: surasNameEnglish[index],
+                        verses: surasVersesCount[index],
+                        suraIndex: index + 1,
+                      ),
                     ),
                   );
                 },
