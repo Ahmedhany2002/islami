@@ -5,7 +5,7 @@ import 'package:islami/screens/introduction_screen.dart';
 void main() {
   runApp(Islami());
 }
-
+// comment
 class Islami extends StatelessWidget {
   const Islami({super.key});
 
