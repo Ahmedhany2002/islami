@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:islami/core/cache_helper.dart';
 import 'package:islami/core/constants/colors/app_colors.dart';
 import 'package:islami/core/constants/styles/app_styles.dart';
 import 'package:islami/screens/home/home_screen.dart';
@@ -76,12 +77,14 @@ class IntroductionScreens extends StatelessWidget {
       ),
       back: Icon(Icons.arrow_back, color: AppColors.primary),
       done: Text("Done", style: AppStyles.bodyStyle),
-      onDone: () {
+      onDone: () async {
+        await CacheHelper.saveBool(true);
         Navigator.pushNamed(context, HomeScreen.routeName);
       },
       showSkipButton: true,
       skip: Text("Skip", style: AppStyles.bodyStyle),
-      onSkip: () {
+      onSkip: () async {
+        await CacheHelper.saveBool(true);
         Navigator.pushNamed(context, HomeScreen.routeName);
       },
     );
