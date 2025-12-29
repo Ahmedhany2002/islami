@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islami/core/cache_helper.dart';
 import 'package:islami/core/constants/colors/app_colors.dart';
 import 'package:islami/model/sura_model.dart';
 import 'package:islami/screens/home/sura_details/sura_details_screen.dart';
@@ -358,6 +359,7 @@ class QuranTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<int> displyMostRecently = CacheHelper.getList("items");
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -400,33 +402,35 @@ class QuranTab extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12),
-            Text(
-              "Most Recently",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xffFEFFE8),
+            if (displyMostRecently.isNotEmpty) ...[
+              Text(
+                "Most Recently",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xffFEFFE8),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            SizedBox(
-              height: 140,
-              child: ListView.separated(
-                itemCount: 10,
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (context, index) => SizedBox(width: 12),
-                itemBuilder: (context, index) {
-                  return RecentlyItem(
-                    suraModel: SuraModel(
-                      nameAr: surasName[index],
-                      nameEn: surasNameEnglish[index],
-                      verses: surasVersesCount[index],
-                      suraIndex: index + 1,
-                    ),
-                  );
-                },
+              SizedBox(height: 10),
+              SizedBox(
+                height: 140,
+                child: ListView.separated(
+                  itemCount: displyMostRecently.length,
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (context, index) => SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    return RecentlyItem(
+                      suraModel: SuraModel(
+                        nameAr: surasName[displyMostRecently[index]],
+                        nameEn: surasNameEnglish[displyMostRecently[index]],
+                        verses: surasVersesCount[displyMostRecently[index]],
+                        suraIndex: displyMostRecently[index] + 1,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
+            ],
             SizedBox(height: 5),
             Text(
               "Suras List",
@@ -452,7 +456,8 @@ class QuranTab extends StatelessWidget {
                 itemCount: surasName.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await CacheHelper.saveList(index);
                       Navigator.pushNamed(
                         context,
                         SuraDetailsScreen.routeName,
